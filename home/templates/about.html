@@ -1,0 +1,134 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Home</title>
+  <link href="/static/plugins/bootstrap-5.3.0/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/static/css/font-awesome.min.css" rel="stylesheet">
+  <link href="/static/css/main.css" rel="stylesheet">
+  <style>
+    /* 设置鼠标悬停在.nav-link上时的背景颜色 */
+    .nav-link:hover {
+      background-color: #007bff; /* 选择您希望的颜色，这里使用了Bootstrap的蓝色 */
+      color: white; /* 设置悬停时的文字颜色，可以根据需要调整 */
+    }
+
+    .custom-text {
+      color: white; /* 设置文本颜色为白色 */
+      font-size: 18px; /* 设置文本大小为20像素，您可以根据需要调整这个值 */
+    }
+  </style>
+</head><!--/head-->
+
+<body>
+<div class="container">
+    <header class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
+      <a href="/navigation/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
+        <svg class="bi me-2" width="40" height="32"><use xlink:href="#bootstrap"></use></svg>
+        <span class="fs-4">农机油耗预测系统</span>
+      </a>
+
+      <ul class="nav nav-pills" id="nav1">
+        <li class="nav-item"><a href="/navigation/" class="nav-link" aria-current="page">首页</a></li>
+        <li class="nav-item"><a href="/diabetes/" class="nav-link">瞬时油耗预测</a></li>
+        <li class="nav-item"><a href="/map/" class="nav-link">轨迹数据可视化</a></li>
+        <li class="nav-item"><a href="/history/" class="nav-link">数据管理</a></li>
+        <li class="nav-item"><a href="/about/" class="nav-link active">关于我们</a></li>
+      </ul>
+    </header>
+</div>
+
+<!--系统介绍-->
+<section id="about-us" class="parallax">
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-6">
+        <div class="about-info wow fadeInUp" data-wow-duration="1000ms" data-wow-delay="300ms">
+          <h2>系统介绍</h2>
+          <p class="custom-text">这个系统的主要功能是通过改进MLP神经网络模型来进行农机油耗预测，</p>
+          <p class="custom-text">可以进行农机瞬时油耗预测以及农机轨迹可视化，</p>
+          <p class="custom-text">在训练使用的测试集上以R方和MAPE作为评估标准，R方达到0.7，MAPE小于26%</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section><!--/#about-us-->
+
+
+
+
+<!-- 团队介绍 -->
+<section id="team"> 
+  <div class="container">
+    <div class="row">
+      <div class="text-center col-sm-3" data-wow-duration="1200ms" data-wow-delay="300ms">
+        <br>
+        <h2>开发者</h2>
+      </div>
+    </div>
+    <div class="team-members">
+      <div class="row">
+        <div class="col-sm-3">
+          <div class="team-member wow flipInY" data-wow-duration="1000ms" data-wow-delay="300ms">
+            <div class="member-image">
+              <img class="img-responsive" src="/static/images/team/1-1.jpg" alt="">
+            </div>
+            <div class="member-info">
+              <h3>王麓源</h3>
+              <h4>开发者</h4>
+            </div>
+            <div class="social-icons">
+              <ul>
+                <li><a class="dribbble" href="https://weibo.com/"><i class="fa fa-weibo"></i></a></li>
+                <li><a class="twitter" href="https://weixin.qq.com/"><i class="fa fa-weixin"></i></a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>            
+  </div>
+</section><!--/#team-->
+
+
+
+
+
+
+<div class="container">
+  <header class="d-flex justify-content-center py-3">
+    <ul class="nav nav-pills">
+      <li class="nav-item"><a href="/navigation/" class="nav-link" aria-current="page">首页</a></li>
+      <li class="nav-item"><a href="/diabetes/" class="nav-link">瞬时油耗预测</a></li>
+      <li class="nav-item"><a href="/map/" class="nav-link">轨迹数据可视化</a></li>
+      <li class="nav-item"><a href="/history/" class="nav-link">数据管理</a></li>
+      <li class="nav-item"><a href="/about/" class="nav-link active">关于我们</a></li>
+    </ul>
+  </header>
+
+</div>
+
+  <script type="text/javascript" src="/static/js/jquery.js"></script>
+  <script type="text/javascript" src="/static/plugins/bootstrap-5.3.0/js/bootstrap.min.js"></script>
+  <script>
+    // 首先，获取所有的li元素
+    var listItems = document.querySelectorAll('.nav-link');
+
+    // 为每个li元素添加点击事件监听器
+    listItems.forEach(function(item) {
+      item.addEventListener('click', function() {
+        // 移除所有li元素的active类
+        listItems.forEach(function(listItem) {
+          listItem.classList.remove('active');
+        });
+
+        // 为被点击的li元素添加active类
+        this.classList.add('active');
+      });
+    });
+  </script>
+</body>
+</html>

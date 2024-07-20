@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Diabetes</title>
+  <link href="/static/plugins/bootstrap-5.3.0/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    #container {
+      overflow: hidden;
+      /* 清除浮动 */
+    }
+
+    /* 设置鼠标悬停在.nav-link上时的背景颜色 */
+    .nav-link:hover {
+      background-color: #007bff;
+      /* 选择您希望的颜色，这里使用了Bootstrap的蓝色 */
+      color: white;
+      /* 设置悬停时的文字颜色，可以根据需要调整 */
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <header class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
+      <a href="/navigation/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
+        <svg class="bi me-2" width="40" height="32">
+          <use xlink:href="#bootstrap"></use>
+        </svg>
+        <span class="fs-4">农机油耗预测系统</span>
+      </a>
+
+      <ul class="nav nav-pills" id="nav1">
+        <li class="nav-item"><a href="/navigation/" class="nav-link" aria-current="page">首页</a></li>
+        <li class="nav-item"><a href="/diabetes/" class="nav-link active">瞬时油耗预测</a></li>
+        <li class="nav-item"><a href="/map/" class="nav-link">轨迹数据可视化</a></li>
+        <li class="nav-item"><a href="/history/" class="nav-link">数据管理</a></li>
+        <li class="nav-item"><a href="/about/" class="nav-link">关于我们</a></li>
+      </ul>
+    </header>
+  </div>
+
+  <section id="prediction-form">
+    <div class="container">
+      <h3 class="text-start fs-5 mb-3">输入预测数据</h3>
+      <form id="predictionForm" method="post" action="/predict/" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="input1">平均速度</label>
+              <input type="text" id="input1" name="input1" class="form-control" placeholder="小数">
+              <h2></h2>
+            </div>
+            <div class="form-group">
+              <label for="input2">速度标准差</label>
+              <input type="text" id="input2" name="input2" class="form-control" placeholder="小数">
+              <h2></h2>
+            </div>
+            <div class="form-group">
+              <label for="input3">平均加速度</label>
+              <input type="text" id="input3" name="input3" class="form-control" placeholder="小数">
+              <h2></h2>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="input4">转速</label>
+              <input type="text" id="input4" name="input4" class="form-control" placeholder="小数">
+              <h2></h2>
+            </div>
+            <div class="form-group">
+              <label for="input5">扭矩</label>
+              <input type="text" id="input5" name="input5" class="form-control" placeholder="小数">
+              <h2></h2>
+            </div>
+            <div class="form-group">
+              <label for="input6">加速占比</label>
+              <input type="text" id="input6" name="input6" class="form-control" placeholder="小数">
+              <h2></h2>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="input7">减速占比</label>
+              <input type="text" id="input7" name="input7" class="form-control" placeholder="小数">
+              <h2></h2>
+            </div>
+            <div class="form-group">
+              <label for="input8">匀速占比</label>
+              <input type="text" id="input8" name="input8" class="form-control" placeholder="小数">
+              <h2></h2>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="input9">怠速占比</label>
+              <input type="text" id="input9" name="input9" class="form-control" placeholder="小数">
+              <h2></h2>
+            </div>
+            <div class="form-group">
+              <label for="input10">功率</label>
+              <input type="text" id="input10" name="input10" class="form-control" placeholder="整数">
+              <h2></h2>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <button type="submit" class="btn btn-primary">预测</button>
+        </div>
+      </form>
+      <div id="result-display"></div>
+    </div>
+    <!-- 新增的文件上传和下载区域 -->
+    <div class="container mt-5"> <!-- 添加了 mt-5 类来增加与上部内容的空间 -->
+      <div class="row">
+        <div class="col-md-6 offset-md-3"> <!-- 使用 offset-md-3 来居中放置 -->
+          <!-- 文件上传表单 -->
+          <form id="uploadForm" class="mb-3" enctype="multipart/form-data">
+            <div class="input-group">
+              <label for="fileUpload" class="input-group-text">上传特征数据集:</label>
+              <input type="file" id="fileUpload" name="exc" class="form-control" required>
+              <button type="submit" class="btn btn-primary" onclick="submitForm()">上传并预测</button>
+            </div>
+          </form>
+
+          <!-- 下载链接按钮 (初始状态为不可点击) -->
+          <div id="downloadContainer" style="display: none;">
+            <p class="text-center">预测完成，请下载更新后的文件:</p>
+            <div class="text-center">
+              <a id="downloadLink" href="#" class="btn btn-success">下载文件</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+
+  <div class="container">
+    <header class="d-flex justify-content-center py-3">
+      <ul class="nav nav-pills">
+        <li class="nav-item"><a href="/navigation/" class="nav-link" aria-current="page">首页</a></li>
+        <li class="nav-item"><a href="/diabetes/" class="nav-link active">瞬时油耗预测</a></li>
+        <li class="nav-item"><a href="/map/" class="nav-link">轨迹数据可视化</a></li>
+        <li class="nav-item"><a href="/history/" class="nav-link">数据管理</a></li>
+        <li class="nav-item"><a href="/about/" class="nav-link">关于我们</a></li>
+      </ul>
+    </header>
+  </div>
+
+
+  <script type="text/javascript" src="/static/js/jquery.js"></script>
+  <script type="text/javascript" src="/static/plugins/bootstrap-5.3.0/js/bootstrap.min.js"></script>
+  <script type="text/javascript">
+    // 监听表单的 submit 事件，并发送 AJAX 请求
+    document.getElementById('predictionForm').addEventListener('submit', function (event) {
+      event.preventDefault(); // 阻止表单的默认提交行为
+
+      // 发送 AJAX 请求到后端
+      fetch('/predict/', {
+        method: 'POST',
+        body: new FormData(this), // 使用 FormData 来发送表单数据
+        headers: {
+          'X-CSRFToken': getCookie('csrftoken')
+        },
+      })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+          return response.json();
+        })
+        .then(data => {
+          // 处理后端返回的预测结果
+          console.log('预测结果:', data.prediction);
+          // 在页面上显示预测结果
+          var resultDisplay = document.getElementById('result-display');
+          resultDisplay.textContent = '预测结果: ' + data.prediction;
+        })
+        .catch(error => {
+          console.error('预测请求出错:', error);
+          // 在页面上显示错误消息
+          var resultDisplay = document.getElementById('result-display');
+          resultDisplay.textContent = '发生错误，请重试。';
+        });
+    });
+
+    // 辅助函数：获取 CSRF 令牌
+    function getCookie(name) {
+      // ... 与之前相同 ...
+      var cookieValue = null;
+      if (document.cookie && document.cookie !== '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+          var cookie = cookies[i].trim();
+          if (cookie.substring(0, name.length + 1) === (name + '=')) {
+            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+            break;
+          }
+        }
+      }
+      return cookieValue;
+    }
+  </script>
+  <script>
+    // JavaScript 函数来处理表单提交
+    function submitForm(event) {
+      event.preventDefault(); // 阻止表单的默认提交行为
+
+      var formData = new FormData(document.getElementById('uploadForm'));
+
+      // 使用 fetch API 发送异步请求
+      fetch('/predict1/', {
+        method: 'POST',
+        body: formData
+      })
+        .then(response => {
+          if (response.ok) {
+            return response.json(); // 如果响应正确，解析JSON
+          } else {
+            throw new Error('服务器错误，请稍后再试。');
+          }
+        })
+        .then(data => {
+          if (data.download_url) {
+            // 如果服务器返回了下载链接
+            document.getElementById('downloadContainer').style.display = 'block';
+            document.getElementById('downloadLink').href = data.download_url;
+            document.getElementById('downloadLink').textContent = '下载更新后的文件';
+          } else {
+            console.error('没有找到下载链接。');
+            // 可以在这里添加错误处理，比如显示一个错误消息
+          }
+        })
+        .catch(error => {
+          console.error('请求失败:', error);
+          // 可以在这里添加错误处理，比如显示一个错误消息
+        });
+    }
+
+    // 为表单添加提交事件监听器
+    document.getElementById('uploadForm').addEventListener('submit', submitForm);
+  </script>
+  <!-- {% if messages %}
+    <script>
+        {% for msg in messages %}
+            alert('{{ msg.message }}');
+        {% endfor %}
+    </script>
+{% endif %} -->
+
+</body>
+
+</html>

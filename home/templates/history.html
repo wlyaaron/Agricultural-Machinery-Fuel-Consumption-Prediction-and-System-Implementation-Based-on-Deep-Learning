@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="/static/plugins/bootstrap-5.3.0/css/bootstrap.min.css" rel="stylesheet">
+  <title>history</title>
+  {% load static %}
+
+  <style>
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      /* 移除单元格间的默认间隙 */
+      margin-top: 20px;
+    }
+
+    th,
+    td {
+      border: 1px solid #ddd;
+      /* 为单元格添加边框 */
+      padding: 8px 15px;
+      /* 为单元格内容添加内边距 */
+      text-align: left;
+    }
+
+    th {
+      background-color: #f2f2f2;
+    }
+
+    .delete-btn {
+      color: #fff;
+      background-color: #d9534f;
+      border: none;
+      border-radius: 5px;
+      padding: 5px 10px;
+      cursor: pointer;
+      margin: 0 5px;
+      /* 为按钮添加外边距，以创建间隙 */
+    }
+
+    .delete-btn:hover {
+      background-color: #c9302c;
+    }
+
+    .detail-btn {
+      color: #fff;
+      background-color: #d9534f;
+      border: none;
+      border-radius: 5px;
+      padding: 5px 10px;
+      cursor: pointer;
+      margin: 0 5px;
+      /* 为按钮添加外边距，以创建间隙 */
+    }
+
+    .detail-btn:hover {
+      background-color: #c9302c;
+    }
+
+    .query-btn {
+      display: inline-block;
+      font-size: 18px;
+      /* 增大按钮文字大小 */
+      padding: 10px 20px;
+      /* 增加按钮的内边距 */
+      margin-top: 30px;
+      /* 增加按钮与导航栏的外边距 */
+      border: none;
+      /* 移除默认边框 */
+      background-color: #007bff;
+      /* 设置按钮的背景颜色 */
+      color: white;
+      /* 设置按钮文字颜色 */
+      cursor: pointer;
+      /* 鼠标悬停时显示手形图标 */
+      border-radius: 5px;
+      /* 增加按钮圆角 */
+      transition: background-color 0.3s ease;
+      /* 平滑背景颜色变化 */
+    }
+
+    /* 按钮悬浮效果 */
+    .query-btn:hover {
+      background-color: #0056b3;
+    }
+
+    /* 导航栏和按钮之间的空间 */
+    .main-nav {
+      margin-bottom: 30px;
+      /* 根据需要调整这个值 */
+    }
+
+    /* 设置鼠标悬停在.nav-link上时的背景颜色 */
+    .nav-link:hover {
+      background-color: #007bff;
+      /* 选择您希望的颜色，这里使用了Bootstrap的蓝色 */
+      color: white;
+      /* 设置悬停时的文字颜色，可以根据需要调整 */
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <header class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
+      <a href="/navigation/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
+        <svg class="bi me-2" width="40" height="32">
+          <use xlink:href="#bootstrap"></use>
+        </svg>
+        <span class="fs-4">农机油耗预测系统</span>
+      </a>
+
+      <ul class="nav nav-pills" id="nav1">
+        <li class="nav-item"><a href="/navigation/" class="nav-link" aria-current="page">首页</a></li>
+        <li class="nav-item"><a href="/diabetes/" class="nav-link">瞬时油耗预测</a></li>
+        <li class="nav-item"><a href="/map/" class="nav-link">轨迹数据可视化</a></li>
+        <li class="nav-item"><a href="/history/" class="nav-link active">数据管理</a></li>
+        <li class="nav-item"><a href="/about/" class="nav-link">关于我们</a></li>
+      </ul>
+    </header>
+  </div>
+  {% csrf_token %}
+  <button id="query-btn" class="query-btn" type="button" onclick="location.href='/history/show_data/'">Query Data</button>
+
+  <!-- 数据表格 -->
+  <table id="data-table">
+    <thead>
+      <tr>
+        <th>File Name</th>
+        <th>Created At</th>
+        <th>did:Start_Coordinate</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for item in data %}
+      <tr>
+        <td>{{ item.0 }}</td>
+        <td>{{ item.1 }}</td>
+        <td>
+          {% for coordinate in item.2 %}
+          <div>
+
+            <strong>did:</strong> {{ coordinate.did }}
+            <strong>Start_Coordinate:</strong> {{ coordinate.coordinate}}
+          </div>
+          {% endfor %}
+        </td>
+        <td>
+          <!-- 删除按钮 -->
+          <button class="delete-btn" data-id="{{ item.3 }}" data-action="{% url 'delete_data' %}">Delete</button>
+          <button class="detail-btn" data-id="{{ item.3 }}" data-action="{% url 'detail_data' %}">View Details</button>
+        </td>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <div class="container">
+    <header class="d-flex justify-content-center py-3">
+      <ul class="nav nav-pills">
+        <li class="nav-item"><a href="/navigation/" class="nav-link" aria-current="page">首页</a></li>
+        <li class="nav-item"><a href="/diabetes/" class="nav-link">瞬时油耗预测</a></li>
+        <li class="nav-item"><a href="/map/" class="nav-link">轨迹数据可视化</a></li>
+        <li class="nav-item"><a href="/history/" class="nav-link active">数据管理</a></li>
+        <li class="nav-item"><a href="/about/" class="nav-link">关于我们</a></li>
+      </ul>
+    </header>
+  </div>
+
+  <script type="text/javascript" src="/static/js/jquery.js"></script>
+  <script type="text/javascript" src="/static/plugins/bootstrap-5.3.0/js/bootstrap.min.js"></script>
+  <script type="text/javascript">
+    // 删除按钮点击事件
+    document.querySelectorAll('.delete-btn').forEach(button => {
+      button.addEventListener('click', function (event) {
+        event.preventDefault();
+        var dataId = this.getAttribute('data-id');
+        var actionUrl = this.getAttribute('data-action');
+        var confirmation = confirm('Are you sure you want to delete this data?');
+        if (confirmation) {
+          var form = document.createElement('form');
+          form.method = 'POST';
+          form.action = actionUrl;
+          var hiddenInput = document.createElement('input');
+          hiddenInput.type = 'hidden';
+          hiddenInput.name = 'data_id';
+          hiddenInput.value = dataId;
+          form.appendChild(hiddenInput);
+          document.body.appendChild(form);
+          form.submit();
+        }
+      });
+    });
+
+    document.querySelectorAll('.detail-btn').forEach(button => {
+      button.addEventListener('click', function (event) {
+        event.preventDefault();
+        var dataId = this.getAttribute('data-id');
+        var actionUrl = this.getAttribute('data-action');
+        var confirmation = confirm('Are you sure you want to search detail data?');
+        if (confirmation) {
+          var form = document.createElement('form');
+          form.method = 'POST';
+          form.action = actionUrl;
+          var hiddenInput = document.createElement('input');
+          hiddenInput.type = 'hidden';
+          hiddenInput.name = 'data_id';
+          hiddenInput.value = dataId;
+          form.appendChild(hiddenInput);
+          document.body.appendChild(form);
+          form.submit();
+        }
+      });
+    });
+  </script>
+
+</body>
+
+</html>

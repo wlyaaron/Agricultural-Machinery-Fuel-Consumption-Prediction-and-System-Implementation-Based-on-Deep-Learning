@@ -1,0 +1,167 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <link href="/static/plugins/bootstrap-5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* 设置鼠标悬停在.nav-link上时的背景颜色 */
+        .nav-link:hover {
+            background-color: #007bff;
+            /* 选择您希望的颜色，这里使用了Bootstrap的蓝色 */
+            color: white;
+            /* 设置悬停时的文字颜色，可以根据需要调整 */
+        }
+
+        body {
+            font-family: Helvetica, 'Hiragino Sans GB', 'Microsoft Yahei', '微软雅黑', Arial, sans-serif;
+        }
+    </style>
+</head><!--/head-->
+
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="#">系统使用手册</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#single-data-prediction">瞬时油耗预测</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#data-set-prediction">轨迹数据可视化</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#data-management">数据管理</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/navigation/">返回首页</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <!-- 单一数据预测板块 -->
+        <section id="single-data-prediction">
+            <div class="row">
+                <div class="col-sm-3">
+                    <h2 class="display-10 font-weight-bold text-primary">瞬时油耗预测</h2>
+                </div>
+                <div class="col-sm-10">
+                    <!-- 图片和解释文本 -->
+                    <div class="text-center mt-4">
+                        <span class="lead text-muted">1.注意输入数据要求</span>
+                        <img class="img-fluid mx-auto d-block mt-3" src="/static/images/attention/1-1.png" alt="1">
+                    </div>
+                    <div class="text-center mt-4">
+                        <span class="lead text-muted">2.输入数据后点击预测即可出结果</span>
+                        <img class="img-fluid mx-auto d-block mt-3" src="/static/images/attention/1-2.png" alt="2">
+                    </div>
+                </div>
+            </div>
+        </section>
+    
+        <!-- 数据集预测板块 -->
+        <section id="data-set-prediction">
+            <div class="row">
+                <div class="col-sm-3">
+                    <h2 class="display-10 font-weight-bold text-primary">轨迹数据可视化</h2>
+                </div>
+                <div class="col-sm-10">
+                    <!-- 图片和解释文本 -->
+                    <div class="text-center mt-4">
+                        <span class="lead text-muted">0.地图要素介绍</span>
+                        <img class="img-fluid mx-auto d-block mt-3" src="/static/images/attention/2-0.png" alt="3">
+                    </div>
+                    <div class="text-center mt-4">
+                        <span class="lead text-muted">1.上传路径数据表格，只接受xlsx和csv形式的文件。注意，本系统所有数据只能通过这里进行上传，具体数据格式如下</span>
+                        <img class="img-fluid mx-auto d-block mt-3" src="/static/images/attention/2-1.png" alt="4">
+                        <img class="img-fluid mx-auto d-block mt-3" src="/static/images/attention/2-0-1.png" alt="4">
+                    </div>
+                    <div class="text-center mt-4">
+                        <span class="lead text-muted">2.一定要点击预测按钮才能将文件上传并进行预测</span>
+                        <img class="img-fluid mx-auto d-block mt-3" src="/static/images/attention/2-2.png" alt="5">
+                    </div>
+                    <div class="text-center mt-4">
+                        <span class="lead text-muted">3.上传文件实现可视化，这里只展示了标注点</span>
+                        <img class="img-fluid mx-auto d-block mt-3" src="/static/images/attention/2-3.png" alt="6">
+                    </div>
+                    <div class="text-center mt-4">
+                        <span class="lead text-muted">4.标注点左键展示相应信息，鼠标移动至标注点还会显示标注点具体经纬度、地址等信息</span>
+                        <img class="img-fluid mx-auto d-block mt-3" src="/static/images/attention/2-4.png" alt="7">
+                    </div>
+                    <div class="text-center mt-4">
+                        <span class="lead text-muted">5.标注点右键用于标准缩放，同时也可以鼠标滚轮调整地图</span>
+                        <img class="img-fluid mx-auto d-block mt-3" src="/static/images/attention/2-5.png" alt="8">
+                    </div>
+                    <div class="text-center mt-4">
+                        <span class="lead text-muted">6.左侧可选择历史文件，同时展示几个文件中的轨迹。本图为推荐设置和放大程度</span>
+                        <img class="img-fluid mx-auto d-block mt-3" src="/static/images/attention/2-6.png" alt="9">
+                    </div>
+                </div>
+            </div>
+        </section>
+    
+        <!-- 数据管理板块 -->
+        <section id="data-management">
+            <div class="row">
+                <div class="col-sm-3">
+                    <h2 class="display-10 font-weight-bold text-primary">数据管理</h2>
+                </div>
+                <div class="col-sm-10">
+                    <!-- 图片和解释文本 -->
+                    <div class="text-center mt-4">
+                        <span class="lead text-muted">1.因数据量太大，设置了查询按钮，只有点击之后才能获取记录</span>
+                        <img class="img-fluid mx-auto d-block mt-3" src="/static/images/attention/3-1.png" alt="10">
+                    </div>
+                    <div class="text-center mt-4">
+                        <span class="lead text-muted">2.只显示每次上传的基本信息，通过Action列的按钮可执行更多操作</span>
+                        <img class="img-fluid mx-auto d-block mt-3" src="/static/images/attention/3-2.png" alt="11">
+                    </div>
+                    <div class="text-center mt-4">
+                        <span class="lead text-muted">3.点击View Details按钮，确认之后跳转至该条记录的具体信息</span>
+                        <img class="img-fluid mx-auto d-block mt-3" src="/static/images/attention/3-3.png" alt="12">
+                    </div>
+                    <div class="text-center mt-4">
+                        <span class="lead text-muted">4.只可检查具体信息正误，若有误建议删除该条记录，重传数据</span>
+                        <img class="img-fluid mx-auto d-block mt-3" src="/static/images/attention/3-4.png" alt="13">
+                    </div>
+                    <div class="text-center mt-4">
+                        <span class="lead text-muted">5.点击Delete，确认之后该记录即删除，可再次查询记录</span>
+                        <img class="img-fluid mx-auto d-block mt-3" src="/static/images/attention/3-5.png" alt="14">
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+    <script type="text/javascript" src="/static/js/jquery.js"></script>
+    <script type="text/javascript" src="/static/plugins/bootstrap-5.3.0/js/bootstrap.min.js"></script>
+    <script>
+        // 首先，获取所有的li元素
+        var listItems = document.querySelectorAll('.nav-link');
+    
+        // 为每个li元素添加点击事件监听器
+        listItems.forEach(function(item) {
+          item.addEventListener('click', function() {
+            // 移除所有li元素的active类
+            listItems.forEach(function(listItem) {
+              listItem.classList.remove('active');
+            });
+    
+            // 为被点击的li元素添加active类
+            this.classList.add('active');
+          });
+        });
+      </script>
+</body>
+</html>

@@ -1,0 +1,407 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Home</title>
+  <link href="/static/plugins/bootstrap-5.3.0/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://a.amap.com/jsapi_demos/static/demo-center/css/demo-center.css" />
+  <script src="https://cache.amap.com/lbs/static/es5.min.js"></script>
+  <script
+    src="https://webapi.amap.com/maps?v=2.0&key=70047088aea74347040573adaa1f3fb1&&plugin=AMap.Scale,AMap.HawkEye,AMap.ToolBar,AMap.ControlBar"></script>
+  <style>
+    #right {
+      background-color: white;
+      height: 600px;
+      /* 确保高度足够显示地图 */
+      padding: 10px;
+    }
+
+    /* 设置鼠标悬停在.nav-link上时的背景颜色 */
+    .nav-link:hover {
+      background-color: #007bff;
+      /* 选择您希望的颜色，这里使用了Bootstrap的蓝色 */
+      color: white;
+      /* 设置悬停时的文字颜色，可以根据需要调整 */
+    }
+
+    html,
+    body {
+      height: 100%;
+    }
+
+    #container {
+      height: 100%;
+    }
+
+    .input-card {
+      width: 150px;
+      top: 100px;
+      left: 10px;
+      bottom: auto;
+    }
+  </style>
+</head><!--/head-->
+
+<body>
+  <div class="container">
+    <header class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
+      <a href="/navigation/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
+        <svg class="bi me-2" width="40" height="32">
+          <use xlink:href="#bootstrap"></use>
+        </svg>
+        <span class="fs-4">农机油耗预测系统</span>
+      </a>
+
+      <ul class="nav nav-pills" id="nav1">
+        <li class="nav-item"><a href="/navigation/" class="nav-link" aria-current="page">首页</a></li>
+        <li class="nav-item"><a href="/diabetes/" class="nav-link">瞬时油耗预测</a></li>
+        <li class="nav-item"><a href="/map/" class="nav-link active">轨迹数据可视化</a></li>
+        <li class="nav-item"><a href="/history/" class="nav-link">数据管理</a></li>
+        <li class="nav-item"><a href="/about/" class="nav-link">关于我们</a></li>
+      </ul>
+    </header>
+  </div>
+
+  <section id="upload">
+    <div id="upload">
+      <div class="container">
+        <form name="contact-form2" method="post" action="/ct/" enctype="multipart/form-data">
+          {% csrf_token %}
+          <div id="left">
+            <div class="row">
+              <div class="col-sm-9">
+                <div class="mb-3">
+                  <label for="formFile" class="form-label">上传路径数据集：</label>
+                  <div class="row">
+                    <div class="col-11">
+                      <input class="form-control" type="file" id="formFile" name="exc">
+                    </div>
+                    <div class="col-1">
+                      <button type="submit" name="submit" class="btn btn-primary">上传</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+
+
+  <div class="container">
+    <div class="row show-grid">
+      <div class="col-md-3">
+        <!-- 添加一个表单来包含复选框 -->
+        <form id="select-uploads-form">
+          {% for upload in uploads %}
+          <label class="form-check-label">
+            <input class="form-check-input" type="checkbox" name="selected_uploads" value="{{ upload.file_name }}">
+            {{ upload.file_name }} - {{ upload.created_at }}
+          </label>
+          <br>
+          {% endfor %}
+          <button type="submit" name="test" class="btn btn-primary">选中数据集可视化</button>
+        </form>
+      </div>
+      <div class="col-md-9">
+        <section id="map">
+          <div id="right">
+            <div id="container">
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <header class="d-flex justify-content-center py-3">
+      <ul class="nav nav-pills">
+        <li class="nav-item"><a href="/navigation/" class="nav-link" aria-current="page">首页</a></li>
+        <li class="nav-item"><a href="/diabetes/" class="nav-link">瞬时油耗预测</a></li>
+        <li class="nav-item"><a href="/map/" class="nav-link active">轨迹数据可视化</a></li>
+        <li class="nav-item"><a href="/history/" class="nav-link">数据管理</a></li>
+        <li class="nav-item"><a href="/about/" class="nav-link">关于我们</a></li>
+      </ul>
+    </header>
+  </div>
+
+  <script type="text/javascript" src="/static/js/jquery.js"></script>
+  <script type="text/javascript" src="/static/plugins/bootstrap-5.3.0/js/bootstrap.min.js"></script>
+
+
+  <script>
+    // 首先，获取所有的li元素
+    var listItems = document.querySelectorAll('.nav-link');
+
+    // 为每个li元素添加点击事件监听器
+    listItems.forEach(function (item) {
+      item.addEventListener('click', function () {
+        // 移除所有li元素的active类
+        listItems.forEach(function (listItem) {
+          listItem.classList.remove('active');
+        });
+
+        // 为被点击的li元素添加active类
+        this.classList.add('active');
+      });
+    });
+  </script>
+  <script type="text/javascript">
+    window._AMapSecurityConfig = {
+      securityJsCode: 'c4b2711078fbda59178f00b58b68214f',
+    }
+  </script>
+  <script type="text/javascript" src="https://webapi.amap.com/maps?v=2.0&key=70047088aea74347040573adaa1f3fb1"></script>
+  <script type="text/javascript">
+    var map = new AMap.Map('container', {
+      resizeEnable: true,
+      center: [116.397428, 39.90923], // 初始中心点
+      zoom: 4
+    });
+    var satelliteLayer = new AMap.TileLayer.Satellite();
+    map.add(satelliteLayer);
+    var markers = [];
+
+    function fetchDataAndDrawMap() {
+      // 使用 AJAX 请求调用 coor 函数
+      var contextMenu = new AMap.ContextMenu();
+      fetch('/coor/', {
+        method: 'POST',
+        body: new FormData(document.querySelector('form')),
+        headers: {
+          'X-CSRFToken': getCookie('csrftoken'),
+        },
+      })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+          return response.json();
+        })
+        .then(data => {
+          // 使用返回的数据绘制地图
+          drawMap(data.upload.coordinates);
+          showAveragePointAndMarkers(data.upload.upload_count, data.upload.start_coor, data.upload.file_name)
+        })
+        .catch(error => {
+          console.error('There has been a problem with your fetch operation:', error);
+        });
+    }
+
+    // 绘制地图的函数
+    function drawMap(coordinates) {
+      // 创建地图实例
+      // 添加卫星地图图层
+      // 使用高德地图 API 解析传入的 JSON 字符串为坐标点数组
+      var pathData = JSON.parse(coordinates);
+      var polyline = new AMap.Polyline({
+        path: pathData.map(function (coord) {
+          // 确保每个坐标点是一个AMap.LngLat对象
+          return new AMap.LngLat(coord[0], coord[1]);
+        }),
+        strokeColor: "#FF33FF",
+        strokeOpacity: 1,
+        strokeWeight: 3
+      });
+      // 将折线添加到地图上
+      map.add(polyline);
+    }
+
+
+
+    function showAveragePointAndMarkers(upload_count, start_coor, file_name, created_at) {
+      // 移动地图实例到默认位置（如果需要）
+      map.setCenter([116.397428, 39.90923]);
+
+      AMap.plugin('AMap.Geocoder', function (Geocoder) {
+        var geocoder = new AMap.Geocoder({
+          radius: 1000,
+          extensions: "all"
+        });
+
+        var startCoorParsed = JSON.parse(start_coor);
+        // 处理start_coor中的每个坐标
+        if (start_coor && Array.isArray(startCoorParsed)) {
+          startCoorParsed.forEach(function (item) {
+            // 确保item包含did和coordinate
+            if (item.did && item.coordinate) {
+              // 对每个坐标执行逆地理编码
+              geocoder.getAddress(item.coordinate, function (status, result) {
+                if (status === 'complete' && result.info === 'OK') {
+                  var coordAddress = result.regeocode.formattedAddress;
+                  // 添加标记
+                  addMarkerWithAddress(map, item.coordinate[0], item.coordinate[1], coordAddress, item.did);
+                } else {
+                  console.error('逆地理编码失败', status, result);
+                }
+              });
+            }
+          });
+        }
+      });
+
+      // 添加标记的函数
+      function addMarkerWithAddress(map, lng, lat, address, customId) {
+        var marker = new AMap.Marker({
+          position: new AMap.LngLat(lng, lat),
+          title: '坐标: ' + lng + ',' + lat + '\n地址: ' + address + (customId ? '\n标识: ' + customId : '')
+        });
+        map.add(marker);
+        markers.push(marker);  // 假设你有一个markers数组来存储所有标记
+        marker.on('rightclick', function (e) {
+          contextMenu.open(map, e.lnglat);
+        });
+        var infoWindow = new AMap.InfoWindow({ offset: new AMap.Pixel(0, -30) });
+        marker.content = file_name + ' 的Start_Marker。'+ ' 该文件是 ' + created_at + ' 上传的';
+        marker.on('click', markerClick);
+
+        function markerClick(e) {
+          infoWindow.setContent(e.target.content);
+          infoWindow.open(map, e.target.getPosition());
+        }
+      }
+    }
+
+
+    // 创建右键菜单
+    var contextMenu = new AMap.ContextMenu();
+
+    // 右键菜单项
+    contextMenu.addItem("放大一级", function () {
+      if (markers.length > 0) {  // 确保markers数组不为空
+        map.setCenter(markers[0].getPosition());
+        map.zoomIn();
+      }
+    }, 0);
+    contextMenu.addItem("缩小一级", function () {
+      if (markers.length > 0) {  // 确保markers数组不为空
+        map.setCenter(markers[0].getPosition());
+        map.zoomOut();
+      }
+    }, 1);
+    contextMenu.addItem("放大二级", function () {
+      if (markers.length > 0) {  // 确保markers数组不为空
+        map.setCenter(markers[0].getPosition());
+        map.zoomIn();
+        map.zoomIn();
+      }
+    }, 2);
+    contextMenu.addItem("缩小二级", function () {
+      if (markers.length > 0) {  // 确保markers数组不为空
+        map.setCenter(markers[0].getPosition());
+        map.zoomOut();
+        map.zoomOut();
+      }
+    }, 3);
+
+
+    // 辅助函数：获取 CSRF 令牌
+    function getCookie(name) {
+      // ... 与之前相同 ...
+      var cookieValue = null;
+      if (document.cookie && document.cookie !== '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+          var cookie = cookies[i].trim();
+          if (cookie.substring(0, name.length + 1) === (name + '=')) {
+            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+            break;
+          }
+        }
+      }
+      return cookieValue;
+    }
+
+
+    AMap.plugin(
+      [
+        "AMap.ToolBar",
+        "AMap.Scale",
+        "AMap.HawkEye",
+        "AMap.MapType",
+        "AMap.Geolocation",
+        "AMap.ControlBar",
+      ],
+      function () {
+        //添加工具条控件，工具条控件集成了缩放、平移、定位等功能按钮在内的组合控件
+        map.addControl(new AMap.ToolBar());
+
+        //添加比例尺控件，展示地图在当前层级和纬度下的比例尺
+        map.addControl(new AMap.Scale());
+
+        //添加鹰眼控件，在地图右下角显示地图的缩略图
+        map.addControl(new AMap.HawkEye({ isOpen: true }));
+
+        //添加类别切换控件，实现默认图层与卫星图、实施交通图层之间切换的控制
+        map.addControl(new AMap.MapType());
+
+        //添加定位控件，用来获取和展示用户主机所在的经纬度位置
+        map.addControl(new AMap.Geolocation());
+
+        //添加控制罗盘控件，用来控制地图的旋转和倾斜
+        map.addControl(new AMap.ControlBar());
+
+      })
+    // 在文档加载完成后调用 fetchDataAndDrawMap 函数
+    document.addEventListener('DOMContentLoaded', fetchDataAndDrawMap);
+  </script>
+  <script>
+    function SelectDataAndDrawMap() {
+      //console.log("好");
+      // 创建一个空数组来存储选中的上传ID
+      var selectedUploadIds = [];
+      // 遍历页面上所有的复选框，如果选中则将其值（上传ID）添加到数组中
+      document.querySelectorAll('input[type="checkbox"][name="selected_uploads"]:checked').forEach(function (checkbox) {
+        selectedUploadIds.push(checkbox.value);
+      });
+
+      // 检查是否至少选中了一个上传
+      if (selectedUploadIds.length === 0) {
+        alert('请选择至少一个上传记录。');
+        return;
+      }
+      //console.log("好");
+      // 使用AJAX（fetch）发送选中的上传ID到后端
+      fetch('/get_map_data/', { // 替换为您的后端URL
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRFToken': getCookie('csrftoken') // 假设您已经实现了getCookie函数来获取CSRF令牌
+        },
+        body: JSON.stringify({ selected_uploads: selectedUploadIds }) // 将选中的ID作为JSON发送
+      })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+          return response.json();
+        })
+        .then(data => {
+          data.uploads.forEach(Data => {
+            drawMap(Data.coordinates);
+            showAveragePointAndMarkers(Data.upload_count, Data.start_coor, Data.file_name, Data.created_at);
+          });
+        })
+        .catch(error => {
+          console.error('There has been a problem with your fetch operation:', error);
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+      // 获取表单的提交按钮
+      var submitButton = document.querySelector('button[name="test"]');
+      submitButton.addEventListener('click', function (event) {
+        event.preventDefault(); // 阻止表单默认提交行为
+        SelectDataAndDrawMap(); // 执行选择数据和绘图的函数
+        // 如果需要，可以在这里调用AJAX请求或其他逻辑
+      });
+    });
+  </script>
+
+</body>
+
+</html>

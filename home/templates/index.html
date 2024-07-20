@@ -1,0 +1,98 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <title>Home</title>
+  <link href="/static/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/static/css/animate.min.css" rel="stylesheet">
+  <link href="/static/css/font-awesome.min.css" rel="stylesheet">
+  <link href="/static/css/lightbox.css" rel="stylesheet">
+  <link href="/static/css/main.css" rel="stylesheet">
+  <link id="css-preset" href="/static/css/presets/preset1.css" rel="stylesheet">
+  <link href="/static/css/responsive.css" rel="stylesheet">
+
+  
+  <style>
+    .navbar-brand {
+      margin-top: -15px; /* 根据需要调整数值 */
+    }
+    .navbar-brand img {
+      max-height: 75px;
+    }
+    .text-center col-sm-8 col-sm-offset-2 {
+      margin-top: 80px; /* 你可以根据需要调整这个值 */
+    }
+    /* 调整服务项图标 */
+    .service-icon i {
+      font-size: 2em; /* 增大图标大小 */
+      margin-bottom: 15px; /* 图标与标题之间的间距 */
+    }
+    /* 调整服务项标题和描述的文本样式 */
+    .service-info h3 {
+      font-size: 1.5em; /* 增大标题大小 */
+      margin-bottom: 10px; /* 标题与描述之间的间距 */
+    }
+  </style>
+</head><!--/head-->
+
+<body>
+
+  <!--.preloader-->
+  <div class="preloader"> <i class="fa fa-circle-o-notch fa-spin"></i></div>
+  <!--/.preloader-->
+
+  <header id="home">
+    <div id="home-slider" class="carousel slide carousel-fade" data-ride="carousel">
+      <div class="carousel-inner">
+        <div class="item active" style="background-image: url(/static/images/slider/1.jpg)">
+          <div class="caption">
+            <h1 class="animated fadeInLeftBig">欢迎进入 <span>农机油耗预测系统</span></h1>
+<!--                <p class="animated fadeInRightBig">Akiyama</p>-->
+            <a data-scroll class="btn btn-start animated fadeInUpBig" href="/navigation/">开始</a>
+          </div>
+        </div>
+
+        <div class="item" style="background-image: url(/static/images/slider/2.jpg)">
+          <div class="caption">
+            <h1 class="animated fadeInLeftBig">输入特征实现 <span>农机瞬时油耗预测</span></h1>
+<!--            <p class="animated fadeInRightBig">Bootstrap - Responsive Design - Retina Ready - Parallax</p>-->
+            <a data-scroll class="btn btn-start animated fadeInUpBig" href="/navigation/">开始</a>
+          </div>
+        </div>
+
+        <div class="item" style="background-image: url(/static/images/slider/3.jpg)">
+          <div class="caption">
+            <h1 class="animated fadeInLeftBig">上传轨迹数据 <span>实现轨迹可视化</span></h1>
+<!--            <p class="animated fadeInRightBig">Bootstrap - Responsive Design - Retina Ready - Parallax</p>-->
+            <a data-scroll class="btn btn-start animated fadeInUpBig" href="/navigation/">开始</a>
+          </div>
+        </div>
+      </div>
+      <a class="left-control" href="#home-slider" data-slide="prev"><i class="fa fa-angle-left"></i></a>
+      <a class="right-control" href="#home-slider" data-slide="next"><i class="fa fa-angle-right"></i></a>
+
+
+
+    </div><!--/#home-slider-->
+  </header><!--/#home-->
+   <!--      导航-->
+
+ 
+
+  <script type="text/javascript" src="/static/js/jquery.js"></script>
+  <script type="text/javascript" src="/static/js/bootstrap.min.js"></script>
+
+  <script type="text/javascript" src="/static/js/jquery.inview.min.js"></script>
+  <script type="text/javascript" src="/static/js/wow.min.js"></script>
+  <script type="text/javascript" src="/static/js/mousescroll.js"></script>
+  <script type="text/javascript" src="/static/js/smoothscroll.js"></script>
+  <script type="text/javascript" src="/static/js/jquery.countTo.js"></script>
+  <script type="text/javascript" src="/static/js/lightbox.min.js"></script>
+  <script type="text/javascript" src="/static/js/main.js"></script>
+
+</body>
+</html>

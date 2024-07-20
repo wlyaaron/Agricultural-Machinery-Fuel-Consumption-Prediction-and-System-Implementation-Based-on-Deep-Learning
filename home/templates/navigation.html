@@ -1,0 +1,198 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Home</title>
+  <link href="/static/plugins/bootstrap-5.3.0/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
+  <style>
+    /* 设置鼠标悬停在.nav-link上时的背景颜色 */
+    .nav-link:hover {
+      background-color: #007bff;
+      /* 选择您希望的颜色，这里使用了Bootstrap的蓝色 */
+      color: white;
+      /* 设置悬停时的文字颜色，可以根据需要调整 */
+    }
+
+    body {
+      font-family: Helvetica, 'Hiragino Sans GB', 'Microsoft Yahei', '微软雅黑', Arial, sans-serif;
+    }
+
+  </style>
+</head><!--/head-->
+
+<body>
+  <div class="container">
+    <header class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
+      <a href="/navigation/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
+        <svg class="bi me-2" width="40" height="32">
+          <use xlink:href="#bootstrap"></use>
+        </svg>
+        <span class="fs-4">农机油耗预测系统</span>
+      </a>
+
+      <ul class="nav nav-pills" id="nav1">
+        <li class="nav-item"><a href="/navigation/" class="nav-link active" aria-current="page">首页</a></li>
+        <li class="nav-item"><a href="/diabetes/" class="nav-link">瞬时油耗预测</a></li>
+        <li class="nav-item"><a href="/map/" class="nav-link">轨迹数据可视化</a></li>
+        <li class="nav-item"><a href="/history/" class="nav-link">数据管理</a></li>
+        <li class="nav-item"><a href="/about/" class="nav-link">关于我们</a></li>
+      </ul>
+    </header>
+  </div>
+
+
+  <!-- 上部卡片行 -->
+  <div class="container mt-4">
+    <div class="row">
+      <!-- 上部左侧卡片 -->
+      <div class="col-md-6">
+        <div class="card">
+          <img src="/home/static/images/influence2.svg" class="card-img-top" alt="Card Image">
+          <div class="card-body">
+            <h5 class="card-title">农机瞬时油耗预测</h5>
+            <p class="card-text">单组特征数据或特征数据集均可进行油耗预测</p>
+            <a href="/diabetes/" class="btn btn-primary">预测一下</a>
+          </div>
+        </div>
+      </div>
+      <!-- 上部右侧卡片 -->
+      <div class="col-md-6">
+        <div class="card">
+          <!-- 替换img标签为canvas标签,用于绘制折线图 -->
+          <canvas id="uploadChart" class="card-img-top" width="400" height="200"></canvas>
+          <div class="card-body">
+            <h5 class="card-title">数据管理</h5>
+            <p class="card-text">后端数据库可视化</p>
+            <a href="/history/" class="btn btn-primary">了解数据集详情</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 下部卡片行 -->
+  <div class="container mt-4">
+    <div class="row">
+      <!-- 下部左侧卡片 -->
+      <div class="col-md-6 d-flex align-items-start">
+        <div class="card">
+          <img src="/home/static/images/可视化.png" class="card-img-top" alt="Card Image">
+          <div class="card-body">
+            <h5 class="card-title">轨迹数据可视化</h5>
+            <p class="card-text">多种地图组件助你深入了解数据集</p>
+            <a href="/map/" class="btn btn-primary">了解更多</a>
+          </div>
+        </div>
+      </div>
+      <!-- 下部右侧卡片 -->
+      <div class="col-md-6 d-flex align-items-start">
+        <div class="card">
+          <img src="/home/static/images/使用手册1.jpg" class="card-img-top" alt="Card Image">
+          <div class="card-body">
+            <h5 class="card-title">使用手册</h5>
+            <p class="card-text">对油耗预测、轨迹数据可视化和数据管理三个功能进行操作指导</p>
+            <a href="/teaching/" class="btn btn-primary">查看手册</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <header class="d-flex justify-content-center py-3">
+      <ul class="nav nav-pills">
+        <li class="nav-item"><a href="/navigation/" class="nav-link active" aria-current="page">首页</a></li>
+        <li class="nav-item"><a href="/diabetes/" class="nav-link">瞬时油耗预测</a></li>
+        <li class="nav-item"><a href="/map/" class="nav-link">轨迹数据可视化</a></li>
+        <li class="nav-item"><a href="/history/" class="nav-link">数据管理</a></li>
+        <li class="nav-item"><a href="/about/" class="nav-link">关于我们</a></li>
+      </ul>
+    </header>
+
+  </div>
+
+  <script type="text/javascript" src="/static/js/jquery.js"></script>
+  <script type="text/javascript" src="/static/plugins/bootstrap-5.3.0/js/bootstrap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    // 首先，获取所有的li元素
+    var listItems = document.querySelectorAll('.nav-link');
+
+    // 为每个li元素添加点击事件监听器
+    listItems.forEach(function (item) {
+      item.addEventListener('click', function () {
+        // 移除所有li元素的active类
+        listItems.forEach(function (listItem) {
+          listItem.classList.remove('active');
+        });
+
+        // 为被点击的li元素添加active类
+        this.classList.add('active');
+      });
+    });
+  </script>
+  <script>
+    // 获取今天的日期
+    const today = new Date();
+
+    // 创建一个新的日期对象，表示明天的日期
+    const tomorrow = new Date(today);
+
+    // 为明天的日期对象增加一天
+    tomorrow.setDate(today.getDate() + 1);
+
+    // 格式化明天的日期为 YYYY-MM-DD
+    const tomorrowFormatted = tomorrow.toISOString().split('T')[0];
+
+
+    // 构建完整的查询字符串
+    const queryString = `start_date=2024-05-31&end_date=${tomorrowFormatted}`;
+
+    // 用fetch请求从后端API获取数据
+    fetch(`/get_daily_upload_counts/?${queryString}`)  // 替换为你的API接口URL
+      .then(response => response.json())
+      .then(data => {
+        // 将获取的数据转换为Chart.js所需的格式
+        const labels = data.map(item => item.created_at__date);  // 日期数组
+        const uploads = data.map(item => item.total_uploads);    // 上传数量数组
+
+        // 使用Chart.js绘制折线图
+        const ctx = document.getElementById('uploadChart').getContext('2d');
+        const uploadChart = new Chart(ctx, {
+          type: 'line',   // 图表类型为折线图
+          data: {
+            labels: labels,  // x轴标签
+            datasets: [{
+              label: '每日上传数据集数量',  // 数据集标签
+              data: uploads,                // y轴数据
+              backgroundColor: 'rgba(255, 99, 132, 0.2)',  // 数据集填充颜色
+              borderColor: 'rgba(255, 99, 132, 1)',        // 数据集边框颜色
+              borderWidth: 1
+            }]
+          },
+          options: {
+            scales: {
+              y: {
+                beginAtZero: true,
+                ticks: {
+                  // 确保stepSize是1的倍数，以保证刻度是整数
+                  stepSize: 1,
+                  // 格式化函数，确保刻度标签是整数
+                  callback: function (value, index, values) {
+                    return parseInt(value);
+                  }
+                }
+              }
+            }
+          }
+        });
+      })
+      .catch(error => console.error('Error fetching data:', error));
+  </script>
+</body>
+
+</html>
